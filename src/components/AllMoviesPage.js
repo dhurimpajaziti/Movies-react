@@ -124,18 +124,3 @@ const AllMoviesPage = () => {
 };
 
 export default AllMoviesPage;
-
-
-{/* <div className="text-center mt-4">
-        <nav aria-label="Page navigation">
-          <ul className="pagination">
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map(page => (
-              <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
-                <button className="page-link" onClick={() => handlePageChange(page)}>
-                  {page}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-</div>  */}
