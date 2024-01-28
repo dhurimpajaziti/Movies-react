@@ -2,48 +2,48 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const AllMoviesPage = () => {
-    const [allMovies, setAllMovies] = useState([]);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(1);
-  
-    useEffect(() => {
-      const fetchMovies = async () => {
-        try {
-          const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=3e52e2f5350ae60de5e2fc58e818d2a0&page=${currentPage + 1}`);
-          const data = await response.json();
-  
-          if (data && data.total_pages && data.results) {
-            setAllMovies(data.results);
-            setTotalPages(Math.min(data.total_pages, 12)); // Limit to 12 pages
-          }
-        } catch (error) {
-          console.error('Error fetching movies:', error);
+  const [allMovies, setAllMovies] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=3e52e2f5350ae60de5e2fc58e818d2a0&page=${currentPage + 1}`);
+        const data = await response.json();
+
+        if (data && data.total_pages && data.results) {
+          setAllMovies(data.results);
+          setTotalPages(data.total_pages);
         }
-      };
-  
-      fetchMovies();
-    }, [currentPage]);
-  
-    const handlePageChange = (newPage) => {
-      setCurrentPage(newPage - 1);
-    };
-  
-    const handleNextPage = () => {
-      if (currentPage < totalPages - 1) {
-        setCurrentPage(currentPage + 1);
+      } catch (error) {
+        console.error('Error fetching movies:', error);
       }
     };
-  
-    const handlePrevPage = () => {
-      if (currentPage > 0) {
-        setCurrentPage(currentPage - 1);
-      }
-    };
-  
-    const visiblePages = 12;
-    const startPage = Math.max(0, currentPage - Math.floor(visiblePages / 2));
-    const endPage = Math.min(totalPages - 1, startPage + visiblePages - 1);
-  
+
+    fetchMovies();
+  }, [currentPage]);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const visiblePages = 12;
+  const startPage = Math.max(0, currentPage - Math.floor(visiblePages / 2));
+  const endPage = Math.min(totalPages - 1, startPage + visiblePages - 1);
+
 
   return (
     <div className="container mt-4">
@@ -104,15 +104,15 @@ const AllMoviesPage = () => {
               <button className="page-link" onClick={handlePrevPage}>&laquo; Previous</button>
             </li>
             {[...Array(endPage - startPage + 1)].map((_, index) => {
-  const page = startPage + index + 1;
-  return (
-    <li key={page} className={`page-item ${page === currentPage + 1 ? 'active' : ''}`}>
-      <button className="page-link" onClick={() => handlePageChange(page)}>
-        {page}
-      </button>
-    </li>
-  );
-})}
+              const page = startPage + index + 1;
+              return (
+                <li key={page} className={`page-item ${page === currentPage + 1 ? 'active' : ''}`}>
+                  <button className="page-link" onClick={() => handlePageChange(page)}>
+                    {page}
+                  </button>
+                </li>
+              );
+            })}
             <li className={`page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={handleNextPage}>Next &raquo;</button>
             </li>
